@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Microsoft Foundry MAI API
+  version: 2026-04-14
+  description: |
+    Manual OpenAPI source for Microsoft Foundry MAI image generation based on
+    Microsoft Learn documentation for MAI-Image-2 and MAI-Image-2e.
+servers:
+  - url: https://example.services.ai.azure.com
+    description: Replace with your Azure AI Foundry resource endpoint.
+security:
+  - apiKey: []
+tags:
+  - name: Images
+    description: MAI image generation endpoints.
+paths:
+  /mai/v1/images/generations:
+    post:
+      operationId: generateImage
+      summary: Generate image
+      description: Generate a PNG image using a deployed MAI image generation model.
+      tags:
+        - Images
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateImageRequest'
+      responses:
+        '200':
+          description: Image generation response containing base64 PNG image data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateImageResponse'
+        '400':
+          $ref: '#/components/responses/Error'
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '429':
+          $ref: '#/components/responses/Error'
+        '500':
+          $ref: '#/components/responses/Error'
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: api-key
+  responses:
+    Error:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    GenerateImageRequest:
+      type: object
+      required:
+        - model
+        - prompt
+        - width
+        - height
+      properties:
+        model:
+          type: string
+          description: Deployment name assigned when deploying MAI-Image-2 or MAI-Image-2e.
+          example: mai-image-2
+        prompt:
+          type: string
+          description: Text prompt describing the image to generate.
+          maxLength: 32000
+          example: A photorealistic image of a mountain lake at sunrise
+        width:
+          type: integer
+          minimum: 768
+          description: Output image width in pixels.
+          example: 1024
+        height:
+          type: integer
+          minimum: 768
+          description: Output image height in pixels.
+          example: 1024
+    GenerateImageResponse:
+      type: object
+      properties:
+        created:
+          type: integer
+          format: int64
+          description: Unix timestamp for the generation response, when returned.
+        data:
+          type: array
+          description: Generated image outputs.
+          items:
+            $ref: '#/components/schemas/ImageData'
+      required:
+        - data
+    ImageData:
+      type: object
+      properties:
+        b64_json:
+          type: string
+          description: Base64 encoded PNG image data.
+        revised_prompt:
+          type: string
+          description: Revised prompt, when returned by the service.
+      required:
+        - b64_json
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/ErrorDetails'
+        message:
+          type: string
+      additionalProperties: true
+    ErrorDetails:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      additionalProperties: true
