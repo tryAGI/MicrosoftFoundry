@@ -49,5 +49,6 @@ namespace MicrosoftFoundry
         public ErrorResponse()
         {
         }
+
     }
 }

@@ -48,5 +48,6 @@ namespace MicrosoftFoundry
         public ErrorDetails()
         {
         }
+
     }
 }

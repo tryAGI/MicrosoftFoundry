@@ -90,5 +90,6 @@ namespace MicrosoftFoundry
         public GenerateImageRequest()
         {
         }
+
     }
 }
