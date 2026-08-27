@@ -4,7 +4,7 @@
 namespace MicrosoftFoundry
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class ImageData
     {
