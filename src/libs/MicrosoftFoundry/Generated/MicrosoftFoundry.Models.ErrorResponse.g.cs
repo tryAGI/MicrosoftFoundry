@@ -4,19 +4,19 @@
 namespace MicrosoftFoundry
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public sealed partial class ErrorResponse
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("error")]
         [global::System.Text.Json.Serialization.JsonConverter(typeof(global::MicrosoftFoundry.JsonConverters.OneOfJsonConverter<string, global::MicrosoftFoundry.ErrorDetails>))]
         public global::MicrosoftFoundry.OneOf<string, global::MicrosoftFoundry.ErrorDetails>? Error { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         [global::System.Text.Json.Serialization.JsonPropertyName("message")]
         public string? Message { get; set; }
